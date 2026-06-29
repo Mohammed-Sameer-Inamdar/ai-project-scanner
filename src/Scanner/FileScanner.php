@@ -36,20 +36,39 @@ final class FileScanner
         $errors = [];
 
         try {
+            $directoryIterator = new RecursiveDirectoryIterator(
+                $projectRoot,
+                RecursiveDirectoryIterator::SKIP_DOTS
+            );
+
             $iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator(
-                    $projectRoot,
-                    RecursiveDirectoryIterator::SKIP_DOTS
-                ),
+                $directoryIterator,
                 RecursiveIteratorIterator::SELF_FIRST
             );
 
             foreach ($iterator as $item) {
-                $absolutePath = $this->fileSystem->normalizePath($item->getPathname());
-                $relativePath = $this->toRelativePath($absolutePath, $projectRoot);
+                $absolutePath = $this->fileSystem->normalizePath(
+                    $item->getPathname()
+                );
 
-                if ($this->ignoreMatcher->shouldIgnore($relativePath, $patterns)) {
+                $relativePath = $this->toRelativePath(
+                    $absolutePath,
+                    $projectRoot
+                );
+
+                if ($this->ignoreMatcher->shouldIgnore(
+                    $relativePath,
+                    $patterns
+                )) {
                     $ignored[] = $relativePath;
+
+                    if ($item->isDir()) {
+                        $iterator->next();
+
+                        // Skip children of ignored directory
+                        continue;
+                    }
+
                     continue;
                 }
 
@@ -61,7 +80,10 @@ final class FileScanner
                 if ($item->isFile()) {
                     $files[] = new FileNode(
                         path: $relativePath,
-                        extension: pathinfo($relativePath, PATHINFO_EXTENSION),
+                        extension: pathinfo(
+                            $relativePath,
+                            PATHINFO_EXTENSION
+                        ),
                         size: $item->getSize()
                     );
                 }

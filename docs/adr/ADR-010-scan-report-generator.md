@@ -1,0 +1,1 @@
+Human-readable scan summaries will be generated in Markdown format to help developers quickly understand project composition.
