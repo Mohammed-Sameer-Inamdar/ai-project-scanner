@@ -1,0 +1,1 @@
+ignore files will be merged and deduplicated from .aiscannerignore, .gitignore, and defaults.
