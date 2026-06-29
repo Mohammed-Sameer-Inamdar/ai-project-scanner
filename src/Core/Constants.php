@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -15,4 +15,15 @@ final class Constants
     public const PROJECT_MAP = 'PROJECT_MAP.json';
 
     public const SCAN_REPORT = 'SCAN_REPORT.md';
+
+    public const DEFAULT_PATTERNS = [
+        '.git/',
+        '.idea/',
+        '.vscode/',
+        'vendor/',
+        'node_modules/',
+        'build/',
+        'dist/',
+        'coverage/',
+    ];
 }
