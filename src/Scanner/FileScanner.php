@@ -11,8 +11,10 @@ use AIProjectScanner\DTO\FileNode;
 use AIProjectScanner\DTO\ScanResult;
 use AIProjectScanner\Utils\IgnoreMatcher;
 use AIProjectScanner\Utils\IgnorePatternLoader;
+use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use SplFileInfo;
 use Throwable;
 
 final class FileScanner
@@ -26,7 +28,11 @@ final class FileScanner
 
     public function scan(ScanContext $context): ScanResult
     {
-        $projectRoot = rtrim($this->fileSystem->normalizePath($context->getProjectRoot()), DIRECTORY_SEPARATOR);
+        $projectRoot = rtrim(
+            $this->fileSystem->normalizePath($context->getProjectRoot()),
+            DIRECTORY_SEPARATOR
+        );
+
         $projectName = basename($projectRoot);
         $patterns = $this->patternLoader->load($projectRoot);
 
@@ -41,8 +47,37 @@ final class FileScanner
                 RecursiveDirectoryIterator::SKIP_DOTS
             );
 
-            $iterator = new RecursiveIteratorIterator(
+            $filterIterator = new RecursiveCallbackFilterIterator(
                 $directoryIterator,
+                function (SplFileInfo $item) use (
+                    $projectRoot,
+                    $patterns,
+                    &$ignored
+                ): bool {
+                    $absolutePath = $this->fileSystem->normalizePath(
+                        $item->getPathname()
+                    );
+
+                    $relativePath = $this->toRelativePath(
+                        $absolutePath,
+                        $projectRoot
+                    );
+
+                    if ($this->ignoreMatcher->shouldIgnore(
+                        $relativePath,
+                        $patterns
+                    )) {
+                        $ignored[] = $relativePath;
+
+                        return false;
+                    }
+
+                    return true;
+                }
+            );
+
+            $iterator = new RecursiveIteratorIterator(
+                $filterIterator,
                 RecursiveIteratorIterator::SELF_FIRST
             );
 
@@ -56,22 +91,6 @@ final class FileScanner
                     $projectRoot
                 );
 
-                if ($this->ignoreMatcher->shouldIgnore(
-                    $relativePath,
-                    $patterns
-                )) {
-                    $ignored[] = $relativePath;
-
-                    if ($item->isDir()) {
-                        $iterator->next();
-
-                        // Skip children of ignored directory
-                        continue;
-                    }
-
-                    continue;
-                }
-
                 if ($item->isDir()) {
                     $directories[] = new DirectoryNode($relativePath);
                     continue;
@@ -80,10 +99,7 @@ final class FileScanner
                 if ($item->isFile()) {
                     $files[] = new FileNode(
                         path: $relativePath,
-                        extension: pathinfo(
-                            $relativePath,
-                            PATHINFO_EXTENSION
-                        ),
+                        extension: pathinfo($relativePath, PATHINFO_EXTENSION),
                         size: $item->getSize()
                     );
                 }
@@ -103,7 +119,11 @@ final class FileScanner
 
     private function toRelativePath(string $absolutePath, string $projectRoot): string
     {
-        $relativePath = str_replace($projectRoot . DIRECTORY_SEPARATOR, '', $absolutePath);
+        $relativePath = str_replace(
+            $projectRoot . DIRECTORY_SEPARATOR,
+            '',
+            $absolutePath
+        );
 
         return str_replace(DIRECTORY_SEPARATOR, '/', $relativePath);
     }
