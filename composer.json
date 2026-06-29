@@ -25,6 +25,9 @@
             "AIProjectScanner\\": "src/"
         }
     },
+    "bin": [
+        "bin/ai-scan"
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true
 }

@@ -1,0 +1,6 @@
+# AI Project Scanner ignore file
+
+ai/
+vendor/
+node_modules/
+.git/
