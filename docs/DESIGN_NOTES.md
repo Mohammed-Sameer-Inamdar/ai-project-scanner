@@ -1,1 +1,2 @@
 ignore files will be merged and deduplicated from .aiscannerignore, .gitignore, and defaults.
+Module detection will be handled by a separate ModuleDetector after FileScanner. FileScanner only scans files and directories.
