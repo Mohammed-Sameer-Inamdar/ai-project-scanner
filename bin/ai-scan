@@ -16,7 +16,13 @@ use AIProjectScanner\Utils\IgnoreMatcher;
 use AIProjectScanner\Utils\IgnorePatternLoader;
 
 $command = $argv[1] ?? null;
-$projectRoot = $argv[2] ?? getcwd();
+
+$projectRoot = realpath($argv[2] ?? getcwd());
+
+if ($projectRoot === false) {
+    echo 'Invalid project path provided.' . PHP_EOL;
+    exit(1);
+}
 
 if ($command !== 'scan') {
     echo 'Usage: php bin/ai-scan scan [project-path]' . PHP_EOL;

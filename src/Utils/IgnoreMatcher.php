@@ -34,9 +34,14 @@ final class IgnoreMatcher
         if (str_ends_with($pattern, '/')) {
             $directory = rtrim($pattern, '/');
 
-            return $path === $directory || str_starts_with($path, $directory . '/');
+            return $path === $directory
+                || str_starts_with($path, $directory . '/')
+                || str_contains($path, '/' . $directory . '/')
+                || str_ends_with($path, '/' . $directory);
         }
 
-        return fnmatch($pattern, $path) || fnmatch($pattern, basename($path));
+        return fnmatch($pattern, $path)
+            || fnmatch($pattern, basename($path))
+            || str_contains($path, '/' . $pattern . '/');
     }
 }
