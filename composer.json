@@ -1,0 +1,30 @@
+{
+    "name": "mohammedsameer/ai-project-scanner",
+    "description": "Generate AI-ready documentation and project maps for software projects.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "ai",
+        "scanner",
+        "documentation",
+        "codeigniter",
+        "react",
+        "project",
+        "analysis"
+    ],
+    "authors": [
+        {
+            "name": "Mohammed Sameer"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "AIProjectScanner\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
