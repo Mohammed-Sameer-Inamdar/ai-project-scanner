@@ -72,7 +72,6 @@ final class FileScanner
 
         return new ScanResult(
             projectName: $projectName,
-            projectRoot: $projectRoot,
             directories: $directories,
             files: $files,
             ignored: $ignored,
