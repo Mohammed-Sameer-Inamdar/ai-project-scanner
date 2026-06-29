@@ -8,7 +8,6 @@ final class ScanResult
 {
     public function __construct(
         private readonly string $projectName,
-        private readonly string $projectRoot,
         private readonly array $directories,
         private readonly array $files,
         private readonly array $ignored,
@@ -20,11 +19,6 @@ final class ScanResult
     public function getProjectName(): string
     {
         return $this->projectName;
-    }
-
-    public function getProjectRoot(): string
-    {
-        return $this->projectRoot;
     }
 
     public function getDirectories(): array
