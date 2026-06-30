@@ -25,6 +25,8 @@ final class Constants
         'build/',
         'dist/',
         'coverage/',
+        'system/',
+        'ai/',
     ];
 
     public const VERSION = '0.1.0';
@@ -32,4 +34,6 @@ final class Constants
     public const FRAMEWORKS = 'FRAMEWORKS.md';
 
     public const PROJECT_CONTEXT = 'PROJECT_CONTEXT.md';
+
+    public const PROJECT_STRUCTURE = 'PROJECT_STRUCTURE.md';
 }

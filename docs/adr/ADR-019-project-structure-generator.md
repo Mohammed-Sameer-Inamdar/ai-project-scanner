@@ -1,0 +1,1 @@
+Generate PROJECT_STRUCTURE.md to provide AI assistants with a categorized overview of application architecture including entry points, controllers, models, services, routes, configuration, testing, documentation, and deployment assets.
