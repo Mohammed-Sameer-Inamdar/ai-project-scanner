@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AIProjectScanner\Core;
 
 use AIProjectScanner\Contracts\GeneratorInterface;
+use AIProjectScanner\DTO\ScanResult;
 use AIProjectScanner\Scanner\FileScanner;
 
 final class ProjectScanner
@@ -18,7 +19,7 @@ final class ProjectScanner
     ) {
     }
 
-    public function scan(ScanContext $context): void
+    public function scan(ScanContext $context): ScanResult
     {
         $result = $this->fileScanner->scan($context);
 
@@ -28,5 +29,7 @@ final class ProjectScanner
                 $context->getOutputDirectory()
             );
         }
+
+        return $result;
     }
 }
