@@ -24,6 +24,7 @@ final class FileScanner
         private readonly IgnorePatternLoader $patternLoader,
         private readonly IgnoreMatcher $ignoreMatcher
     ) {
+
     }
 
     public function scan(ScanContext $context): ScanResult
@@ -127,4 +128,8 @@ final class FileScanner
 
         return str_replace(DIRECTORY_SEPARATOR, '/', $relativePath);
     }
+    
+    /**
+     * @todo Integrate framework and module detectors.
+     */
 }

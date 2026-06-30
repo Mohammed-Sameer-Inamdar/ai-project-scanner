@@ -24,6 +24,8 @@ use AIProjectScanner\Scanner\FileScanner;
 use AIProjectScanner\Utils\FileSystem;
 use AIProjectScanner\Utils\IgnoreMatcher;
 use AIProjectScanner\Utils\IgnorePatternLoader;
+use AIProjectScanner\Detector\FrameworkDetector;
+use AIProjectScanner\Generator\FrameworksGenerator;
 
 $command = $argv[1] ?? null;
 
@@ -56,11 +58,26 @@ $projectScanner = new ProjectScanner(
     ]
 );
 
-$projectScanner->scan(
-    new ScanContext(
-        projectRoot: $projectRoot
-    )
+$context = new ScanContext(
+    projectRoot: $projectRoot,
+    outputDirectory: $projectRoot . DIRECTORY_SEPARATOR . 'ai'
 );
 
+$scanResult = $projectScanner->scan($context);
+
+$frameworkResult = (new FrameworkDetector($fileSystem))->detect(
+    $scanResult,
+    $projectRoot
+);
+
+(new FrameworksGenerator($fileSystem))->generate(
+    $frameworkResult,
+    $context->getOutputDirectory()
+);
+
+echo 'PROJECT_TREE.md generated successfully.' . PHP_EOL;
+echo 'PROJECT_MAP.json generated successfully.' . PHP_EOL;
+echo 'SCAN_REPORT.md generated successfully.' . PHP_EOL;
+echo 'FRAMEWORKS.md generated successfully.' . PHP_EOL;
 echo 'AI Project Scanner completed successfully.' . PHP_EOL;
 echo 'Output generated in: ai/' . PHP_EOL;
