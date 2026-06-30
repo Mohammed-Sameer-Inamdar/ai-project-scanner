@@ -41,3 +41,23 @@ ai/
 - CodeIgniter4
 - Node.js
 - React
+
+# Project Modules
+
+## Product
+
+Files:
+- app/Controllers/ProductController.php
+- app/Models/ProductModel.php
+- react/src/pages/ProductPage.tsx
+
+## Order
+
+Files:
+- app/Controllers/OrderController.php
+- app/Models/OrderModel.php
+
+## Company
+
+Files:
+- app/Controllers/CompanyController.php

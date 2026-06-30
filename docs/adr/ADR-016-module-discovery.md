@@ -1,0 +1,1 @@
+Modules shall be inferred from controllers, models, pages, services, and feature folders to provide AI-friendly project decomposition.
