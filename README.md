@@ -34,3 +34,10 @@ ai/
 ├── PROJECT_MAP.json
 └── SCAN_REPORT.md
 ```
+# Detected Frameworks
+
+## Frameworks
+
+- CodeIgniter4
+- Node.js
+- React
