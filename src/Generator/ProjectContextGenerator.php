@@ -7,6 +7,7 @@ namespace AIProjectScanner\Generator;
 use AIProjectScanner\Contracts\FileSystemInterface;
 use AIProjectScanner\Core\Constants;
 use AIProjectScanner\DTO\FrameworkDetectionResult;
+use AIProjectScanner\DTO\ProjectStructureResult;
 use AIProjectScanner\DTO\ScanResult;
 
 final class ProjectContextGenerator
@@ -19,19 +20,21 @@ final class ProjectContextGenerator
     public function generate(
         ScanResult $scanResult,
         FrameworkDetectionResult $frameworkResult,
+        ProjectStructureResult $structureResult,
         string $outputDirectory
     ): void {
         $this->fileSystem->ensureDirectoryExists($outputDirectory);
 
         $this->fileSystem->write(
             $outputDirectory . DIRECTORY_SEPARATOR . Constants::PROJECT_CONTEXT,
-            $this->buildContent($scanResult, $frameworkResult)
+            $this->buildContent($scanResult, $frameworkResult, $structureResult)
         );
     }
 
     private function buildContent(
         ScanResult $scanResult,
-        FrameworkDetectionResult $frameworkResult
+        FrameworkDetectionResult $frameworkResult,
+        ProjectStructureResult $structureResult
     ): string {
         return implode(PHP_EOL, [
             '# Project Context',
@@ -56,11 +59,11 @@ final class ProjectContextGenerator
             '',
             '## Important Directories',
             '',
-            $this->buildImportantDirectories($scanResult),
+            $this->buildImportantDirectories($structureResult),
             '',
             '## Important Files',
             '',
-            $this->buildImportantFiles($scanResult),
+            $this->buildImportantFiles($structureResult),
             '',
             '## AI Guidance',
             '',
@@ -69,8 +72,9 @@ final class ProjectContextGenerator
             '- Use PROJECT_MAP.json for complete file metadata.',
             '- Use SCAN_REPORT.md for file statistics and ignored paths.',
             '- Use FRAMEWORKS.md for detected technology stack.',
-            '- Before suggesting code changes, identify related controller, model, view, route, API, and frontend files.',
-            '- Avoid modifying vendor, node_modules, build, dist, cache, and generated files.',
+            '- Use PROJECT_STRUCTURE.md to understand entry points, routes, controllers, services, models, database files, config, tests, documentation, and deployment files.',
+            '- Before suggesting code changes, identify related controller, model, service, route, API, database, frontend, and test files.',
+            '- Avoid modifying vendor, node_modules, build, dist, cache, framework internals, and generated files.',
             '- Prefer small, focused changes with clear reasoning.',
             '',
         ]);
@@ -91,89 +95,79 @@ final class ProjectContextGenerator
         );
     }
 
-    private function buildImportantDirectories(ScanResult $scanResult): string
+    private function buildImportantDirectories(ProjectStructureResult $structureResult): string
     {
-        $important = [
-            'app/Controllers',
-            'app/Models',
-            'app/Views',
-            'app/Config',
-            'app/Database',
-            'routes',
-            'src',
-            'src/components',
-            'src/features',
-            'src/pages',
-            'react/src',
-            'react/src/components',
-            'react/src/features',
-            'react/src/pages',
-        ];
+        $directories = [];
 
-        $found = [];
+        foreach ($this->getStructureGroups($structureResult) as $group) {
+            foreach ($group as $file) {
+                $directory = dirname($file);
 
-        foreach ($scanResult->getDirectories() as $directory) {
-            $path = $directory->getPath();
-
-            if (in_array($path, $important, true)) {
-                $found[] = $path;
+                if ($directory !== '.' && $directory !== '') {
+                    $directories[] = str_replace('\\', '/', $directory);
+                }
             }
         }
 
-        if ($found === []) {
-            return 'No standard important directories detected.';
-        }
+        $directories = array_values(array_unique($directories));
+        sort($directories);
 
-        sort($found);
+        if ($directories === []) {
+            return 'No important directories detected.';
+        }
 
         return implode(
             PHP_EOL,
             array_map(
-                fn (string $path): string => '- ' . $path,
-                $found
+                fn (string $directory): string => '- ' . $directory,
+                $directories
             )
         );
     }
 
-    private function buildImportantFiles(ScanResult $scanResult): string
+    private function buildImportantFiles(ProjectStructureResult $structureResult): string
     {
-        $importantFiles = [
-            'composer.json',
-            'package.json',
-            'react/package.json',
-            'app/Config/Routes.php',
-            'routes/web.php',
-            'routes/api.php',
-            'artisan',
-            'spark',
-            'index.php',
-            'public/index.php',
-            'vite.config.js',
-            'react/vite.config.js',
-        ];
+        $files = [];
 
-        $found = [];
-
-        foreach ($scanResult->getFiles() as $file) {
-            $path = $file->getPath();
-
-            if (in_array($path, $importantFiles, true)) {
-                $found[] = $path;
+        foreach ($this->getStructureGroups($structureResult) as $group) {
+            foreach ($group as $file) {
+                $files[] = $file;
             }
         }
 
-        if ($found === []) {
-            return 'No standard important files detected.';
-        }
+        $files = array_values(array_unique($files));
+        sort($files);
 
-        sort($found);
+        if ($files === []) {
+            return 'No important files detected.';
+        }
 
         return implode(
             PHP_EOL,
             array_map(
-                fn (string $path): string => '- ' . $path,
-                $found
+                fn (string $file): string => '- ' . $file,
+                $files
             )
         );
+    }
+
+    /**
+     * @return array<int, array<string>>
+     */
+    private function getStructureGroups(ProjectStructureResult $structureResult): array
+    {
+        return [
+            $structureResult->getBackendEntryPoints(),
+            $structureResult->getFrontendEntryPoints(),
+            $structureResult->getRouteFiles(),
+            $structureResult->getControllerFiles(),
+            $structureResult->getServiceFiles(),
+            $structureResult->getModelFiles(),
+            $structureResult->getDatabaseFiles(),
+            $structureResult->getConfigFiles(),
+            $structureResult->getTestFiles(),
+            $structureResult->getDocumentationFiles(),
+            $structureResult->getDeploymentFiles(),
+        ];
     }
 }

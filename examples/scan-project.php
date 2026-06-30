@@ -16,6 +16,8 @@ use AIProjectScanner\Utils\FileSystem;
 use AIProjectScanner\Utils\IgnoreMatcher;
 use AIProjectScanner\Utils\IgnorePatternLoader;
 use AIProjectScanner\Generator\ProjectContextGenerator;
+use AIProjectScanner\Detector\ProjectStructureDetector;
+use AIProjectScanner\Generator\ProjectStructureGenerator;
 
 $projectRoot = $argv[1] ?? dirname(__DIR__);
 
@@ -58,9 +60,19 @@ $frameworkResult = (new FrameworkDetector($fileSystem))->detect(
     $context->getOutputDirectory()
 );
 
+$structureResult = (new ProjectStructureDetector())
+    ->detect($scanResult);
+
+(new ProjectStructureGenerator($fileSystem))
+    ->generate(
+        $structureResult,
+        $context->getOutputDirectory()
+    );
+
 (new ProjectContextGenerator($fileSystem))->generate(
     $scanResult,
     $frameworkResult,
+    $structureResult,
     $context->getOutputDirectory()
 );
 
@@ -68,6 +80,8 @@ echo 'PROJECT_TREE.md generated successfully.' . PHP_EOL;
 echo 'PROJECT_MAP.json generated successfully.' . PHP_EOL;
 echo 'SCAN_REPORT.md generated successfully.' . PHP_EOL;
 echo 'FRAMEWORKS.md generated successfully.' . PHP_EOL;
+echo 'PROJECT_CONTEXT.md generated successfully.' . PHP_EOL;
+echo 'PROJECT_STRUCTURE.md generated successfully.' . PHP_EOL;
 echo 'PROJECT_CONTEXT.md generated successfully.' . PHP_EOL;
 echo PHP_EOL;
 echo 'Project scan completed successfully.' . PHP_EOL;
