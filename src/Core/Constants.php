@@ -30,4 +30,6 @@ final class Constants
     public const VERSION = '0.1.0';
 
     public const FRAMEWORKS = 'FRAMEWORKS.md';
+
+    public const PROJECT_CONTEXT = 'PROJECT_CONTEXT.md';
 }
