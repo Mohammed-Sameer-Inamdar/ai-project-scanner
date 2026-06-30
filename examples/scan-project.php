@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use AIProjectScanner\Core\ProjectScanner;
 use AIProjectScanner\Core\ScanContext;
 use AIProjectScanner\Detector\FrameworkDetector;
 use AIProjectScanner\Generator\FrameworksGenerator;
@@ -26,10 +27,17 @@ if ($realPath === false) {
 
 $fileSystem = new FileSystem();
 
-$fileScanner = new FileScanner(
-    $fileSystem,
-    new IgnorePatternLoader($fileSystem),
-    new IgnoreMatcher()
+$projectScanner = new ProjectScanner(
+    new FileScanner(
+        $fileSystem,
+        new IgnorePatternLoader($fileSystem),
+        new IgnoreMatcher()
+    ),
+    [
+        new TreeGenerator($fileSystem),
+        new JsonGenerator($fileSystem),
+        new ScanReportGenerator($fileSystem),
+    ]
 );
 
 $context = new ScanContext(
@@ -37,22 +45,7 @@ $context = new ScanContext(
     outputDirectory: $realPath . DIRECTORY_SEPARATOR . 'ai'
 );
 
-$scanResult = $fileScanner->scan($context);
-
-(new TreeGenerator($fileSystem))->generate(
-    $scanResult,
-    $context->getOutputDirectory()
-);
-
-(new JsonGenerator($fileSystem))->generate(
-    $scanResult,
-    $context->getOutputDirectory()
-);
-
-(new ScanReportGenerator($fileSystem))->generate(
-    $scanResult,
-    $context->getOutputDirectory()
-);
+$scanResult = $projectScanner->scan($context);
 
 $frameworkResult = (new FrameworkDetector($fileSystem))->detect(
     $scanResult,
