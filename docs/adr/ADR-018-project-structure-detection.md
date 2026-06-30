@@ -1,0 +1,1 @@
+Project structure shall be inferred using language-agnostic heuristics to support multiple ecosystems including PHP, Java, Node.js, Python, Go, and frontend frameworks.

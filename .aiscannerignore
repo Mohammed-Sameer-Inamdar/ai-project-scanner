@@ -4,3 +4,4 @@ ai/
 vendor/
 node_modules/
 .git/
+system/
