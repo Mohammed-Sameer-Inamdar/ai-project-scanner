@@ -1,0 +1,1 @@
+Framework detection shall be rule-based to avoid unnecessary dependencies and keep detection deterministic.
