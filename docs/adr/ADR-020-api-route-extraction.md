@@ -1,0 +1,1 @@
+AI assistants frequently need API information to propose code changes. The scanner will extract routes from supported frameworks and generate API_ROUTES.md.
