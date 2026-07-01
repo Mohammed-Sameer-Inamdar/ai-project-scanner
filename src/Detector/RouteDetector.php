@@ -39,6 +39,8 @@ final class RouteDetector
             $result
         );
 
+        $this->detectLaravelRoutes($scanResult, $projectRoot, $result);
+
         return $result;
     }
 
@@ -320,5 +322,112 @@ final class RouteDetector
         }
 
         return $content;
+    }
+
+    private function detectLaravelRoutes(
+        ScanResult $scanResult,
+        string $projectRoot,
+        RouteDiscoveryResult $result
+    ): void {
+        foreach ($scanResult->getFiles() as $file) {
+            if (!$file instanceof FileNode) {
+                continue;
+            }
+
+            if (!in_array($file->getPath(), ['routes/web.php', 'routes/api.php'], true)) {
+                continue;
+            }
+
+            $routesPath = $projectRoot . DIRECTORY_SEPARATOR . str_replace(
+                '/',
+                DIRECTORY_SEPARATOR,
+                $file->getPath()
+            );
+
+            $content = $this->fileSystem->read($routesPath);
+
+            $this->extractLaravelDirectRoutes(
+                $content,
+                $result,
+                $file->getPath() === 'routes/api.php' ? 'api' : ''
+            );
+        }
+    }
+
+    private function extractLaravelDirectRoutes(
+        string $content,
+        RouteDiscoveryResult $result,
+        string $prefix = ''
+    ): void {
+        foreach (self::CI4_DIRECT_METHODS as $method) {
+            if ($method === 'add') {
+                continue;
+            }
+
+            $pattern = sprintf(
+                '/Route::%s\(\s*[\'"]([^\'"]*)[\'"]\s*,\s*(.+?)(?:,\s*\[.*?\])?\s*\);/is',
+                preg_quote($method, '/')
+            );
+
+            preg_match_all(
+                $pattern,
+                $content,
+                $matches,
+                PREG_SET_ORDER
+            );
+
+            foreach ($matches as $match) {
+                $handler = $this->normalizeLaravelHandler($match[2]);
+
+                if ($handler === '') {
+                    continue;
+                }
+
+                $result->addRoute(
+                    new RouteDefinition(
+                        method: strtoupper($method),
+                        uri: $this->joinUri($prefix, $match[1]),
+                        handler: $handler,
+                        framework: 'Laravel'
+                    )
+                );
+            }
+        }
+    }
+
+    private function normalizeLaravelHandler(string $handler): string
+    {
+        $handler = trim($handler);
+
+        if (
+            preg_match(
+                '/\[\s*([A-Za-z0-9_\\\\]+)::class\s*,\s*[\'"]([^\'"]+)[\'"]\s*\]/',
+                $handler,
+                $match
+            )
+        ) {
+            return $match[1] . '@' . $match[2];
+        }
+
+        if (
+            preg_match(
+                '/[\'"]([^\'"]+@[^\'"]+)[\'"]/',
+                $handler,
+                $match
+            )
+        ) {
+            return $match[1];
+        }
+
+        if (
+            preg_match(
+                '/[A-Za-z0-9_\\\\]+::class/',
+                $handler
+            )
+        ) {
+            return trim($handler);
+        }
+
+        return '';
     }
 }
