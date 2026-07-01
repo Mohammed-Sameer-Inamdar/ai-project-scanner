@@ -36,4 +36,6 @@ final class Constants
     public const PROJECT_CONTEXT = 'PROJECT_CONTEXT.md';
 
     public const PROJECT_STRUCTURE = 'PROJECT_STRUCTURE.md';
+
+    public const API_ROUTES = 'API_ROUTES.md';
 }

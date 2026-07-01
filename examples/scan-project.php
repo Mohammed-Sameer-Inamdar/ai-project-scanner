@@ -18,6 +18,8 @@ use AIProjectScanner\Utils\IgnorePatternLoader;
 use AIProjectScanner\Generator\ProjectContextGenerator;
 use AIProjectScanner\Detector\ProjectStructureDetector;
 use AIProjectScanner\Generator\ProjectStructureGenerator;
+use AIProjectScanner\Detector\RouteDetector;
+use AIProjectScanner\Generator\ApiRoutesGenerator;
 
 $projectRoot = $argv[1] ?? dirname(__DIR__);
 
@@ -76,6 +78,16 @@ $structureResult = (new ProjectStructureDetector())
     $context->getOutputDirectory()
 );
 
+$routeResult = (new RouteDetector($fileSystem))->detect(
+    $scanResult,
+    $projectRoot
+);
+
+(new ApiRoutesGenerator($fileSystem))->generate(
+    $routeResult,
+    $context->getOutputDirectory()
+);
+
 echo 'PROJECT_TREE.md generated successfully.' . PHP_EOL;
 echo 'PROJECT_MAP.json generated successfully.' . PHP_EOL;
 echo 'SCAN_REPORT.md generated successfully.' . PHP_EOL;
@@ -83,5 +95,6 @@ echo 'FRAMEWORKS.md generated successfully.' . PHP_EOL;
 echo 'PROJECT_CONTEXT.md generated successfully.' . PHP_EOL;
 echo 'PROJECT_STRUCTURE.md generated successfully.' . PHP_EOL;
 echo 'PROJECT_CONTEXT.md generated successfully.' . PHP_EOL;
+echo 'API_ROUTES.md generated successfully.' . PHP_EOL;
 echo PHP_EOL;
 echo 'Project scan completed successfully.' . PHP_EOL;

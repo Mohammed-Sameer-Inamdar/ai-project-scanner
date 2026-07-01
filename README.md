@@ -132,6 +132,8 @@ ai/
 ├── PROJECT_MAP.json
 ├── SCAN_REPORT.md
 └── FRAMEWORKS.md
+└── API_ROUTES.md
+
 ```
 
 ---
@@ -152,6 +154,7 @@ PROJECT_TREE.md       → folder overview
 PROJECT_MAP.json      → complete file metadata
 FRAMEWORKS.md         → detected technology stack
 SCAN_REPORT.md        → statistics and ignored paths
+API_ROUTES.md         → all apis from a backend service
 ```
 
 ---
@@ -241,6 +244,24 @@ Example:
 ```
 
 ---
+
+
+### `API_ROUTES.md`
+
+# API Routes
+
+## CodeIgniter4
+
+| Method | Route | Controller |
+|---------|-------|------------|
+| GET | /route_name | Controller::function |
+| POST | /route_name | Controller::function |
+
+## Express
+
+| Method | Route | Handler |
+|---------|-------|---------|
+| GET | /route-name | Controller.function |
 
 ## Ignore Files
 
@@ -454,6 +475,16 @@ Install:
 
 ```bash
 composer require mohammedsameer/ai-project-scanner
+```
+
+## PHAR Installation (Experimental)
+
+Download the latest PHAR from GitHub Releases.
+
+Run:
+
+```bash
+php ai-project-scanner.phar scan .
 ```
 
 ---
