@@ -29,5 +29,8 @@
         "bin/ai-scan"
     ],
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "humbug/box": "^4.7"
+    }
 }
