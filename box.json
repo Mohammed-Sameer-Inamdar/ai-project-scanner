@@ -1,0 +1,13 @@
+{
+  "main": "bin/ai-scan",
+  "output": "build/ai-project-scanner.phar",
+  "directories": ["src"],
+  "files": ["composer.json"],
+  "finder": [
+    {
+      "name": "*.php",
+      "in": "src"
+    }
+  ],
+  "compression": "GZ"
+}
