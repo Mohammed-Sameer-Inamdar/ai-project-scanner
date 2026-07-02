@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.3]
+
+### Improved
+
+- Added route statistics to `SCAN_REPORT.md`
+- Added route counts by framework
+- Refactored route detection into framework-specific extractors
+- Improved maintainability for future route extractors
+
+### Supported Route Extraction
+
+- CodeIgniter4
+- Laravel
+
 ## [0.3.2]
 
 ### Added
