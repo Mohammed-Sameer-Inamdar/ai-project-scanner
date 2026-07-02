@@ -414,6 +414,16 @@ final class RouteDetector
 
         if (
             preg_match(
+                '/([A-Za-z0-9_\\\\]+)::class/',
+                $handler,
+                $match
+            )
+        ) {
+            return $match[1];
+        }
+
+        if (
+            preg_match(
                 '/\[\s*([A-Za-z0-9_\\\\]+)::class\s*,\s*[\'"]([^\'"]+)[\'"]\s*\]/',
                 $handler,
                 $match
@@ -430,15 +440,6 @@ final class RouteDetector
             )
         ) {
             return $match[1];
-        }
-
-        if (
-            preg_match(
-                '/[A-Za-z0-9_\\\\]+::class/',
-                $handler
-            )
-        ) {
-            return trim($handler);
         }
 
         return '';
