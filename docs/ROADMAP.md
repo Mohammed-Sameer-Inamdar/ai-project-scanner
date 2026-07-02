@@ -1,12 +1,21 @@
-# Milestone 1
+# Roadmap
 
-- File Scanner
-- Ignore Parser
-- Tree Generator
-- JSON Generator
+## Completed
 
-Status
+- Composer package
+- CLI command
+- PHAR build
+- Framework detection
+- Project context generation
+- Project structure detection
+- CodeIgniter4 route extraction
+- Laravel route extraction
 
-[ ] File Scanner
-[ ] Ignore Parser
-[ ] Tree Generator
+## Next
+
+- Spring Boot route extraction
+- Express.js route extraction
+- FastAPI route extraction
+- Docker image
+- NPM wrapper
+- VS Code extension

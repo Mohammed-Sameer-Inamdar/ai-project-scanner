@@ -39,8 +39,11 @@ $routeResult = (new RouteDetector($fileSystem))->detect(
     $realPath
 );
 
+echo 'Detected Routes: ' . $routeResult->count() . PHP_EOL . PHP_EOL;
 
-echo 'Detected Routes:' . PHP_EOL;
+foreach ($routeResult->countByFramework() as $framework => $count) {
+    echo '- ' . $framework . ': ' . $count . PHP_EOL;
+}
 echo PHP_EOL;
 
 if ($routeResult->getRoutes() === []) {
