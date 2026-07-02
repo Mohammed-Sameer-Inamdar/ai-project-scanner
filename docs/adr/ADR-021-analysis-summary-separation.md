@@ -1,0 +1,1 @@
+Analysis artifacts shall be separated from ScanResult to keep file scanning concerns isolated from higher-level project analysis.

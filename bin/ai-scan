@@ -30,6 +30,7 @@ use AIProjectScanner\Generator\ProjectContextGenerator;
 use AIProjectScanner\Detector\ProjectStructureDetector;
 use AIProjectScanner\Generator\ProjectStructureGenerator;
 use AIProjectScanner\Detector\RouteDetector;
+use AIProjectScanner\DTO\AnalysisSummary;
 use AIProjectScanner\Generator\ApiRoutesGenerator;
 
 $command = $argv[1] ?? null;
@@ -58,8 +59,7 @@ $projectScanner = new ProjectScanner(
     $fileScanner,
     [
         new TreeGenerator($fileSystem),
-        new JsonGenerator($fileSystem),
-        new ScanReportGenerator($fileSystem),
+        new JsonGenerator($fileSystem)
     ]
 );
 
@@ -98,6 +98,17 @@ $structureResult = (new ProjectStructureDetector())
 $routeResult = (new RouteDetector($fileSystem))->detect(
     $scanResult,
     $projectRoot
+);
+
+$analysisSummary = new AnalysisSummary(
+    routeCount: $routeResult->count(),
+    frameworkRouteCounts: $routeResult->countByFramework()
+);
+
+(new ScanReportGenerator($fileSystem))->generate(
+    $scanResult,
+    $context->getOutputDirectory(),
+    $analysisSummary
 );
 
 (new ApiRoutesGenerator($fileSystem))->generate(
