@@ -4,7 +4,9 @@
 
 - Finalize Laravel route extraction
 - Update README and docs
-- Release v0.3.2
+- Release v0.3.3
+- Route statistics in SCAN_REPORT.md
+- Framework-specific route extractor refactor
 
 ## Next
 

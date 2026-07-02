@@ -27,6 +27,8 @@ v0.3.2
 * Universal project structure detection
 * Framework detection
 * API route extraction
+* Route statistics in scan report
+* Framework-specific route extractors
 * `.gitignore` support
 * `.aiscannerignore` support
 * Intelligent ignore engine with directory pruning
@@ -336,6 +338,8 @@ Planned capabilities:
 * ✅ Laravel route extraction
 * ✅ API route documentation generation
 * ✅ Improved route summaries
+* ✅ Route statistics in SCAN_REPORT.md
+* ✅ Framework-specific route extractor refactor
 
 ## v0.4.x
 

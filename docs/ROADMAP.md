@@ -10,6 +10,8 @@
 - Project structure detection
 - CodeIgniter4 route extraction
 - Laravel route extraction
+- Route statistics in SCAN_REPORT.md
+- Framework-specific route extractor refactor
 
 ## Next
 
