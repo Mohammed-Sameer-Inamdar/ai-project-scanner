@@ -1,144 +1,151 @@
 # AI Project Scanner
 
-Generate AI-ready project documentation for any software project.
+Generate AI-ready documentation for any software project.
 
 Built by developers tired of explaining the same project to AI every day.
 
-AI Project Scanner helps AI assistants understand an existing codebase before suggesting bug fixes, feature updates, refactoring, or architecture improvements.
+AI Project Scanner helps AI assistants understand existing codebases before suggesting bug fixes, feature updates, refactoring, or architecture improvements.
 
 ---
 
-## Current Status
+## 🚧 Current Status
 
-🚧 Actively under development.
+AI Project Scanner is actively under development.
 
-Current stable release:
+**Current Stable Release**
 
 ```bash
-v0.2.0
+v0.3.2
 ```
 
 ---
 
-## Features
+## ✨ Features
 
 * Recursive project scanning
 * AI-ready project context generation
 * Universal project structure detection
 * Framework detection
+* API route extraction
 * `.gitignore` support
 * `.aiscannerignore` support
-* Ignore engine with directory pruning
-* CLI support
+* Intelligent ignore engine with directory pruning
+* Command-line interface (CLI)
 * Composer package installation
-* Works with PHP, React, Node, Express, Java, Python, Go, and other project folders
+* PHAR build support
+* Works with PHP, Laravel, CodeIgniter4, React, Node.js, Java, Python, Go, and many other projects
 
 ---
 
-## Supported Detection
+## 🔍 Supported Detection
 
-### Backend
+### Framework Detection
+
+Currently supported:
 
 * CodeIgniter 4
 * Laravel
 * Node.js
 * Express.js
-* Java / Spring Boot structure
-* Python project structure
-* Go project structure
-
-### Frontend
-
 * React
 * Next.js
 * Vue.js
 
-More framework-specific detection will be added in future releases.
+### API Route Extraction
+
+Currently supported:
+
+* CodeIgniter 4
+* Laravel
+
+Planned support:
+
+* Express.js
+* NestJS
+* Next.js API Routes
+* Spring Boot
+* FastAPI
+* Django
+* Go HTTP Routers
 
 ---
 
-## Installation
+## 📦 Installation
 
-### Current Installation: Composer
+### Composer
 
 ```bash
 composer require mohammedsameer/ai-project-scanner
 ```
 
-Then scan your project:
+Run:
 
 ```bash
 php vendor/bin/ai-scan scan .
 ```
 
-Scan another project folder:
+### PHAR
+
+Download the latest PHAR from GitHub Releases.
+
+Run:
+
+```bash
+php ai-project-scanner.phar scan .
+```
+
+---
+
+## 🚀 Usage Examples
+
+### Scan Current Project
+
+```bash
+php vendor/bin/ai-scan scan .
+```
+
+### Scan Another Project
 
 ```bash
 php vendor/bin/ai-scan scan /path/to/project
 ```
 
----
-
-## Usage Examples
-
-### PHP / Composer Project
-
-```bash
-composer require mohammedsameer/ai-project-scanner
-php vendor/bin/ai-scan scan .
-```
-
-### React Project
+### Scan a React Project
 
 ```bash
 php vendor/bin/ai-scan scan ../my-react-app
 ```
 
-### Node / Express Project
+### Scan a Laravel Project
 
 ```bash
-php vendor/bin/ai-scan scan ../my-express-api
+php vendor/bin/ai-scan scan ../my-laravel-app
 ```
 
-### Java / Spring Boot Project
+### Scan a Spring Boot Project
 
 ```bash
 php vendor/bin/ai-scan scan ../spring-boot-api
 ```
 
-### Python Project
-
-```bash
-php vendor/bin/ai-scan scan ../python-fastapi-service
-```
-
-### Go Project
-
-```bash
-php vendor/bin/ai-scan scan ../go-service
-```
-
 ---
 
-## Generated AI Documentation
-
-After scanning, the tool creates:
+## 📁 Generated AI Documentation
 
 ```text
 ai/
 ├── PROJECT_CONTEXT.md
 ├── PROJECT_STRUCTURE.md
+├── API_ROUTES.md
 ├── PROJECT_TREE.md
 ├── PROJECT_MAP.json
 ├── SCAN_REPORT.md
 └── FRAMEWORKS.md
-└── API_ROUTES.md
-
 ```
 
 ---
 
-## Which File Should AI Read First?
+## 🤖 Which File Should AI Read First?
 
 Start with:
 
@@ -146,133 +153,107 @@ Start with:
 ai/PROJECT_CONTEXT.md
 ```
 
-Then use:
+Then continue with:
 
 ```text
-PROJECT_STRUCTURE.md  → architecture and important files
-PROJECT_TREE.md       → folder overview
-PROJECT_MAP.json      → complete file metadata
-FRAMEWORKS.md         → detected technology stack
-SCAN_REPORT.md        → statistics and ignored paths
-API_ROUTES.md         → all apis from a backend service
+PROJECT_STRUCTURE.md → Architecture and important files
+API_ROUTES.md        → Backend routes and handlers
+PROJECT_TREE.md      → Folder overview
+PROJECT_MAP.json     → Complete file metadata
+FRAMEWORKS.md        → Detected technology stack
+SCAN_REPORT.md       → Statistics and ignored paths
 ```
 
 ---
 
-## Generated Files Explained
+# 📚 Generated Files Explained
 
-### `PROJECT_CONTEXT.md`
+## PROJECT_CONTEXT.md
 
-The main AI onboarding document.
+The primary AI onboarding document.
 
 It summarizes:
 
-* project name
-* detected frameworks
-* important directories
-* important files
+* Project name
+* Detected frameworks
+* Important directories
+* Important files
 * AI guidance for safe code changes
-
-Use this file first when asking AI for help.
 
 ---
 
-### `PROJECT_STRUCTURE.md`
+## PROJECT_STRUCTURE.md
 
 Categorized architecture overview.
 
 Includes:
 
-* backend entry points
-* frontend entry points
-* route files
-* controller files
-* service files
-* model/entity files
-* database files
-* config files
-* test files
-* documentation files
-* deployment files
+* Backend entry points
+* Frontend entry points
+* Route files
+* Controller files
+* Service files
+* Model/entity files
+* Database files
+* Configuration files
+* Test files
+* Documentation files
+* Deployment files
 
 ---
 
-### `PROJECT_TREE.md`
+## API_ROUTES.md
 
-Simple project tree showing folders and files.
-
-Useful for quickly understanding the repository layout.
-
----
-
-### `PROJECT_MAP.json`
-
-Machine-readable project metadata.
-
-Useful for AI tools, scripts, and future integrations.
-
----
-
-### `SCAN_REPORT.md`
-
-Project statistics.
-
-Includes:
-
-* total files
-* total directories
-* ignored paths
-* file extension counts
-* scan errors
-
----
-
-### `FRAMEWORKS.md`
-
-Detected technology stack.
+Generated backend route documentation.
 
 Example:
 
-```md
-# Detected Frameworks
+| Method | URI               | Handler              |
+| ------ | ----------------- | -------------------- |
+| GET    | api/products      | Product::table       |
+| POST   | api/products/save | Product::saveProduct |
 
-## Frameworks
-
-- CodeIgniter4
-- Node.js
-- React
-```
+Currently supports CodeIgniter 4 and Laravel route extraction.
 
 ---
 
+## PROJECT_TREE.md
 
-### `API_ROUTES.md`
+Simple project tree showing folders and files.
 
-# API Routes
+---
 
-## CodeIgniter4
+## PROJECT_MAP.json
 
-| Method | Route | Controller |
-|---------|-------|------------|
-| GET | /route_name | Controller::function |
-| POST | /route_name | Controller::function |
+Machine-readable project metadata for AI tools and future integrations.
 
-## Express
+---
 
-| Method | Route | Handler |
-|---------|-------|---------|
-| GET | /route-name | Controller.function |
+## SCAN_REPORT.md
 
-## Ignore Files
+Project statistics including:
+
+* File counts
+* Ignored paths
+* File extension counts
+* Scan errors
+
+---
+
+## FRAMEWORKS.md
+
+Detected technology stack and frameworks.
+
+---
+
+# 🚫 Ignore Files
 
 AI Project Scanner respects:
 
-```text
-.gitignore
-.aiscannerignore
-```
+* `.gitignore`
+* `.aiscannerignore`
 
-Default ignored folders include:
+Default ignored directories include:
 
 ```text
 .git/
@@ -285,159 +266,125 @@ system/
 ai/
 ```
 
-You can create a custom `.aiscannerignore` file:
+---
 
-```text
-# AI Project Scanner ignore file
+# 💡 Why This Exists
 
-ai/
-vendor/
-node_modules/
-system/
-storage/
-cache/
-```
+AI assistants are powerful, but they often struggle with large existing projects because they often do not know:
+
+* Project structure
+* Entry points
+* Framework stack
+* Routes and handlers
+* Important files
+* Business logic locations
+* Which files should not be modified
+
+AI Project Scanner generates structured documentation so AI can understand projects faster and suggest safer, more accurate changes.
 
 ---
 
-## Why This Exists
+# 🔮 Future Universal Installation Options
 
-AI assistants are powerful, but they often struggle with large existing projects because they do not know:
-
-* project structure
-* entry points
-* framework stack
-* important files
-* where business logic lives
-* which files should not be modified
-
-AI Project Scanner generates structured documentation so AI can understand the project faster and suggest safer changes.
-
----
-
-## Future Universal Installation Options
-
-The current version is distributed through Composer.
-
-Planned installation options:
-
-### PHAR
-
-```bash
-php ai-project-scanner.phar scan .
-```
-
-### Docker
+## Docker
 
 ```bash
 docker run --rm -v "$PWD:/project" ai-project-scanner scan /project
 ```
 
-### NPM / NPX
+## NPM / NPX
 
 ```bash
 npx ai-project-scanner scan .
 ```
 
-### Java / JAR Wrapper
+---
 
-```bash
-java -jar ai-project-scanner.jar scan .
-```
+## VS Code / Cursor / Windsurf Extension
 
-### VS Code / Windsurf / Cursor Extension
+Planned capabilities:
 
-Planned extension support:
-
-* scan current workspace
-* regenerate AI docs
-* open `PROJECT_CONTEXT.md`
-* provide AI-ready project context
+* Scan current workspace
+* Regenerate AI documentation
+* Open `PROJECT_CONTEXT.md`
+* Provide AI-ready project context
 
 ---
 
-## Roadmap
+# 🗺️ Roadmap
 
-### v0.1.x
+## v0.1.x
 
-* [x] Project tree generation
-* [x] JSON project map generation
-* [x] Scan report generation
-* [x] CLI support
-* [x] Composer package
+* ✅ Project tree generation
+* ✅ JSON project map generation
+* ✅ Scan report generation
+* ✅ CLI support
+* ✅ Composer package
 
-### v0.2.x
+## v0.2.x
 
-* [x] Framework detection
-* [x] Framework documentation
-* [x] Project context generation
-* [x] Universal project structure detection
-* [x] Project structure documentation
+* ✅ Framework detection
+* ✅ Framework documentation
+* ✅ Project context generation
+* ✅ Universal project structure detection
+* ✅ Project structure documentation
 
-### v0.3.x
+## v0.3.x
 
-* [ ] PHAR build
-* [ ] Docker image
-* [ ] Improved CLI options
-* [ ] Config file support
+* ✅ PHAR build support
+* ✅ CodeIgniter 4 API route extraction
+* ✅ Laravel route extraction
+* ✅ API route documentation generation
+* ✅ Improved route summaries
 
-### v0.4.x
+## v0.4.x
 
-* [ ] NPM wrapper
-* [ ] `npx ai-project-scanner scan .`
-* [ ] Better Node / React / Express detection
+* ⏳ Spring Boot route extraction
+* ⏳ Express.js route extraction
+* ⏳ FastAPI route extraction
+* ⏳ Docker image support
 
-### v0.5.x
+## v0.5.x
 
-* [ ] Java / Spring Boot structure improvements
-* [ ] Python / FastAPI / Django detection
-* [ ] Go project detection
-* [ ] Microservice workspace detection
-
-### Future
-
-* [ ] Route extraction
-* [ ] API documentation generation
-* [ ] Database relationship detection
-* [ ] Module discovery
-* [ ] AI prompt pack generation
-* [ ] VS Code extension
-* [ ] Cursor / Windsurf integration
+* ⏳ NPM wrapper
+* ⏳ `npx ai-project-scanner scan .`
+* ⏳ VS Code extension
 
 ---
 
-## Example AI Workflow
+# 🚀 Future Enhancements
 
-After running:
+* Database relationship detection
+* Dependency graph generation
+* Module discovery
+* AI prompt pack generation
+* Plugin architecture
+
+---
+
+# 🤖 Example AI Workflow
+
+Generate documentation:
 
 ```bash
 php vendor/bin/ai-scan scan .
 ```
 
-Ask your AI assistant:
+Then ask your AI assistant:
 
-```text
-Read ai/PROJECT_CONTEXT.md first.
-Then use ai/PROJECT_STRUCTURE.md and ai/PROJECT_MAP.json.
-I want to fix a bug in the quotation module.
-Suggest which files I should inspect and what changes may be required.
-```
+> Read `ai/PROJECT_CONTEXT.md` first. Then use `ai/PROJECT_STRUCTURE.md`, `ai/API_ROUTES.md`, and `ai/PROJECT_MAP.json`. I want to fix a bug in the quotation module. Suggest which files I should inspect and what changes may be required.
 
 ---
 
-## Contributing
+# 🤝 Contributing
 
 Contributions are welcome.
 
-Please read:
+Please review:
 
-```text
-CONTRIBUTING.md
-CODE_OF_CONDUCT.md
-SECURITY.md
-```
-
-Before submitting pull requests.
+* `CONTRIBUTING.md`
+* `CODE_OF_CONDUCT.md`
+* `SECURITY.md`
 
 Recommended workflow:
 
@@ -447,11 +394,11 @@ git pull
 git checkout -b feature/your-feature-name
 ```
 
-Then create a pull request.
+Then create a Pull Request.
 
 ---
 
-## License
+# 📄 License
 
 This project is licensed under the MIT License.
 
@@ -463,11 +410,11 @@ LICENSE
 
 ---
 
-## Package
+# 📦 Package
 
-Packagist:
+**Packagist**
 
-```text
+```bash
 mohammedsameer/ai-project-scanner
 ```
 
@@ -477,19 +424,9 @@ Install:
 composer require mohammedsameer/ai-project-scanner
 ```
 
-## PHAR Installation (Experimental)
-
-Download the latest PHAR from GitHub Releases.
-
-Run:
-
-```bash
-php ai-project-scanner.phar scan .
-```
-
 ---
 
-## Philosophy
+# 🧭 Philosophy
 
 Built by developers tired of explaining the same project to AI every day.
 
